@@ -1,3 +1,169 @@
+// FIXED Navigation System - Add this at the beginning of app.js
+console.log('🚀 CryptoTracker Pro - Loading JavaScript...');
+
+// Wait for page to fully load
+window.addEventListener('load', function() {
+    console.log('✅ Page loaded - Initializing app...');
+    setTimeout(initializeApp, 500);
+});
+
+// Also try when DOM is ready (backup)
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM ready - Initializing app...');
+    setTimeout(initializeApp, 1000);
+});
+
+// Force initialization after 2 seconds (final backup)
+setTimeout(function() {
+    console.log('⚡ Force initialization...');
+    initializeApp();
+}, 2000);
+
+// Core Variables and Data Storage
+let portfolio = JSON.parse(localStorage.getItem('crypto-portfolio')) || [];
+let trades = JSON.parse(localStorage.getItem('crypto-trades')) || [];
+let watchlist = JSON.parse(localStorage.getItem('crypto-watchlist')) || [];
+let alerts = JSON.parse(localStorage.getItem('crypto-alerts')) || [];
+let triggeredAlerts = JSON.parse(localStorage.getItem('crypto-triggered-alerts')) || [];
+
+// API Configuration
+const API_BASE = 'https://api.coingecko.com/api/v3';
+const BINANCE_API = 'https://api.binance.com/api/v3';
+let priceCache = new Map();
+let lastPriceUpdate = 0;
+const PRICE_UPDATE_INTERVAL = 30000;
+
+// Chart instances
+let portfolioChart = null;
+let performanceChart = null;
+
+// Initialize Application - FIXED VERSION
+function initializeApp() {
+    console.log('🚀 CryptoTracker Pro Initializing...');
+    
+    // Setup navigation FIRST
+    setupNavigation();
+    
+    // Load saved data
+    loadPortfolio();
+    loadTrades();
+    loadWatchlist();
+    loadAlerts();
+    
+    // Update displays
+    updateDashboard();
+    updatePortfolioTable();
+    updateTradesTable();
+    updateWatchlistDisplay();
+    updateAlertsDisplay();
+    
+    // Set active tab
+    showTab('dashboard');
+    
+    // Setup other event listeners
+    setupEventListeners();
+    
+    // Start price updates
+    startPriceUpdates();
+    
+    // Initialize charts
+    initializeCharts();
+    
+    console.log('✅ CryptoTracker Pro Initialized Successfully!');
+}
+
+// FIXED Navigation Setup
+function setupNavigation() {
+    console.log('🔧 Setting up navigation...');
+    
+    const tabLinks = document.querySelectorAll('.nav-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    console.log('📍 Found navigation links:', tabLinks.length);
+    console.log('📍 Found tab contents:', tabContents.length);
+    
+    if (tabLinks.length === 0) {
+        console.error('❌ No navigation links found! Retrying...');
+        setTimeout(setupNavigation, 1000);
+        return;
+    }
+    
+    tabLinks.forEach((link, index) => {
+        console.log(`🔗 Setting up link ${index}:`, link.dataset.tab);
+        
+        // Remove existing listeners
+        link.replaceWith(link.cloneNode(true));
+        const newLink = document.querySelectorAll('.nav-link')[index];
+        
+        // Add new event listener
+        newLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('📱 Clicked tab:', this.dataset.tab);
+            
+            // Show the selected tab
+            showTab(this.dataset.tab);
+            
+            // Update active nav link
+            tabLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        });
+        
+        // Also add touch event for mobile
+        newLink.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            console.log('👆 Touched tab:', this.dataset.tab);
+            
+            showTab(this.dataset.tab);
+            tabLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    
+    console.log('✅ Navigation setup complete!');
+}
+
+// FIXED Tab Management
+function showTab(tabId) {
+    console.log('🔄 Switching to tab:', tabId);
+    
+    // Hide all tab contents
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Show selected tab
+    const selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+        console.log('✅ Showed tab:', tabId);
+        
+        // Refresh data for specific tabs
+        switch(tabId) {
+            case 'dashboard':
+                updateDashboard();
+                updateCharts();
+                break;
+            case 'portfolio':
+                updatePortfolioTable();
+                break;
+            case 'trades':
+                updateTradesTable();
+                break;
+            case 'watchlist':
+                updateWatchlistDisplay();
+                break;
+            case 'alerts':
+                updateAlertsDisplay();
+                break;
+        }
+    } else {
+        console.error('❌ Tab not found:', tabId);
+    }
+}
+
+// Keep all your other existing functions below (setupEventListeners, utility functions, etc.)
+// Don't remove anything else - just ADD the code above at the beginning
 // Core Variables and Data Storage
 let portfolio = JSON.parse(localStorage.getItem('crypto-portfolio')) || [];
 let trades = JSON.parse(localStorage.getItem('crypto-trades')) || [];
