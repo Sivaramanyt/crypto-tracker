@@ -236,29 +236,95 @@
     </div>
 
     <script>
-        // Minimal JS to make navigation work and modals
-        const navLinks = document.querySelectorAll('.nav-link');
-        const tabContents = document.querySelectorAll('.tab-content');
+console.log('🚀 CryptoTracker Pro - Simple Version Loading...');
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', e => {
-                e.preventDefault();
-                navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                const target = link.getAttribute('onclick').match(/'([^']+)'/)[1];
-                tabContents.forEach(tab => tab.classList.remove('active'));
-                document.getElementById(target).classList.add('active');
-            });
-        });
+// Simple tab switching that works
+function showTab(tabId) {
+    console.log('Switching to:', tabId);
+    
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Show selected tab
+    const selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+    }
+    
+    // Update navigation active state
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Make clicked link active
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
+}
 
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-        }
+// Modal functions
+function openAddCoinModal() {
+    console.log('Opening Add Coin modal');
+    const modal = document.getElementById('add-coin-modal');
+    if (modal) {
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+    }
+}
 
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-    </script>
+function openTradeModal() {
+    console.log('Opening Trade modal');  
+    const modal = document.getElementById('trade-modal');
+    if (modal) {
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+    }
+}
+
+function openWatchlistModal() {
+    const modal = document.getElementById('watchlist-modal');
+    if (modal) {
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+    }
+}
+
+function openAlertModal() {
+    const modal = document.getElementById('alert-modal');
+    if (modal) {
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+    }
+}
+
+function closeModal(modalId) {
+    console.log('Closing modal:', modalId);
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+    }
+}
+
+// Close modals when clicking outside
+window.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+        closeModal(event.target.id);
+    }
+});
+
+// Initialize when page loads
+window.addEventListener('load', function() {
+    console.log('✅ CryptoTracker Pro loaded successfully!');
+    
+    // Make sure dashboard is active by default
+    showTab('dashboard');
+});
+
+console.log('🚀 JavaScript ready!');
+        </script>
 </body>
 </html>
 
