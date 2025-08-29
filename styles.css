@@ -1386,12 +1386,3 @@ table tbody tr:hover {
         transition-duration: 0.01ms !important;
     }
 }
-'''
-
-# Write zip file
-zip_filename_css = 'crypto_portfolio_tracker_css.zip'
-
-with zipfile.ZipFile(zip_filename_css, 'w') as zf:
-    zf.writestr('styles.css', css_full_content)
-
-zip_filename_css
