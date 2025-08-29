@@ -575,9 +575,123 @@ window.addEventListener('load', function() {
 
 console.log('✅ All data functions added successfully!');
         
-    </script>
+</script>
+
+<!-- Quick Watchlist Modal -->
+<div id="watchlist-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add to Watchlist</h3>
+            <span class="close" onclick="closeModal('watchlist-modal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="addToWatchlist(); return false;">
+                <input type="text" id="watchlist-coin" placeholder="Enter coin symbol (e.g., BTC)" required style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #333; background: #1e1e2e; color: white; border-radius: 5px;">
+                <button type="submit" class="btn btn-primary">Add to Watchlist</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('watchlist-modal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Alert Modal -->
+<div id="alert-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Create Alert</h3>
+            <span class="close" onclick="closeModal('alert-modal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="addAlert(); return false;">
+                <input type="text" id="alert-coin" placeholder="Coin symbol" required style="width: 100%; padding: 8px; margin: 5px 0; background: #1e1e2e; color: white; border: 1px solid #333; border-radius: 3px;">
+                <select id="alert-type" required style="width: 100%; padding: 8px; margin: 5px 0; background: #1e1e2e; color: white; border: 1px solid #333; border-radius: 3px;">
+                    <option value="">Select Type</option>
+                    <option value="above">Above</option>
+                    <option value="below">Below</option>
+                </select>
+                <input type="number" id="alert-price" placeholder="Target price" required style="width: 100%; padding: 8px; margin: 5px 0; background: #1e1e2e; color: white; border: 1px solid #333; border-radius: 3px;">
+                <button type="submit" class="btn btn-primary">Create Alert</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('alert-modal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function addAlert() {
+    const coin = document.getElementById('alert-coin')?.value?.trim().toUpperCase();
+    const type = document.getElementById('alert-type')?.value;
+    const targetPrice = parseFloat(document.getElementById('alert-price')?.value);
+    
+    if (!coin || !type || !targetPrice) {
+        alert('Please fill all fields!');
+        return false;
+    }
+    
+    let alerts = JSON.parse(localStorage.getItem('crypto-alerts') || '[]');
+    alerts.push({
+        id: Date.now().toString(),
+        coin: coin,
+        type: type,
+        targetPrice: targetPrice,
+        dateCreated: new Date().toISOString()
+    });
+    localStorage.setItem('crypto-alerts', JSON.stringify(alerts));
+    
+    updateAlertsDisplay();
+    closeModal('alert-modal');
+    document.getElementById('alert-coin').value = '';
+    document.getElementById('alert-type').value = '';
+    document.getElementById('alert-price').value = '';
+    
+    alert(`✅ Alert created for ${coin}!`);
+    return false;
+}
+
+function updateAlertsDisplay() {
+    const alertsList = document.getElementById('alerts-list');
+    if (!alertsList) return;
+    
+    const alerts = JSON.parse(localStorage.getItem('crypto-alerts') || '[]');
+    
+    if (alerts.length === 0) {
+        alertsList.innerHTML = '<div style="text-align: center; padding: 40px;"><h3>🔔 No alerts</h3><button class="btn btn-primary" onclick="openAlertModal()">Create Alert</button></div>';
+        return;
+    }
+    
+    let html = '<div style="margin-top: 20px;">';
+    alerts.forEach(alert => {
+        html += `<div style="background: #1e1e2e; padding: 15px; margin: 10px 0; border-radius: 10px; color: white;">
+            <strong>${alert.coin}</strong> - ${alert.type} $${alert.targetPrice}
+            <button onclick="removeAlert('${alert.id}')" style="float: right; background: #ff4757; border: none; color: white; padding: 3px 8px; border-radius: 3px; cursor: pointer;">Remove</button>
+        </div>`;
+    });
+    html += '</div>';
+    alertsList.innerHTML = html;
+}
+
+function removeAlert(alertId) {
+    if (confirm('Remove alert?')) {
+        let alerts = JSON.parse(localStorage.getItem('crypto-alerts') || '[]');
+        alerts = alerts.filter(alert => alert.id !== alertId);
+        localStorage.setItem('crypto-alerts', JSON.stringify(alerts));
+        updateAlertsDisplay();
+        alert('✅ Alert removed!');
+    }
+}
+
+// Update the load function to include alerts
+window.addEventListener('load', function() {
+    updatePortfolioDisplay();
+    updateTradesDisplay(); 
+    updateWatchlistDisplay();
+    updateAlertsDisplay();
+    console.log('✅ All displays with alerts initialized');
+});
+</script>
 </body>
 </html>
+
 """
 
 import zipfile
