@@ -1,6 +1,3 @@
-import zipfile
-import os
-
 # File contents
 html_content = '''<!DOCTYPE html>
 <html lang="en">
@@ -387,18 +384,4 @@ html_content = '''<!DOCTYPE html>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js"></script>
 </body>
-</html>'''
-
-css_content = '''/* Paste the entire styles.css content here */'''
-
-js_content = '''// Paste the entire app.js content here '''
-
-# Create zip file
-zip_filename = 'crypto_portfolio_tracker.zip'
-
-with zipfile.ZipFile(zip_filename, 'w') as zf:
-    zf.writestr('index.html', html_content)
-    zf.writestr('styles.css', css_content)
-    zf.writestr('app.js', js_content)
-
-zip_filename
+</html>
