@@ -1,0 +1,273 @@
+index_html_content = """<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>CryptoTracker Pro - Professional Portfolio Management</title>
+    <link rel=\"stylesheet\" href=\"styles.css\">
+    <link href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\" rel=\"stylesheet\">
+    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">
+</head>
+<body>
+    <!-- Header -->
+    <header class=\"header\">
+        <div class=\"container\">
+            <div class=\"logo\">
+                <i class=\"fas fa-chart-line\"></i>
+                <h1>CryptoTracker Pro</h1>
+            </div>
+            <nav class=\"nav\">
+                <a href=\"#\" class=\"nav-link active\" onclick=\"showTab('dashboard')\">
+                    <i class=\"fas fa-tachometer-alt\"></i>Dashboard
+                </a>
+                <a href=\"#\" class=\"nav-link\" onclick=\"showTab('portfolio')\">
+                    <i class=\"fas fa-wallet\"></i>Portfolio
+                </a>
+                <a href=\"#\" class=\"nav-link\" onclick=\"showTab('trades')\">
+                    <i class=\"fas fa-exchange-alt\"></i>Trades
+                </a>
+                <a href=\"#\" class=\"nav-link\" onclick=\"showTab('watchlist')\">
+                    <i class=\"fas fa-eye\"></i>Watchlist
+                </a>
+                <a href=\"#\" class=\"nav-link\" onclick=\"showTab('alerts')\">
+                    <i class=\"fas fa-bell\"></i>Alerts
+                </a>
+            </nav>
+            <div class=\"header-actions\">
+                <button class=\"btn btn-primary\" onclick=\"openModal('add-coin-modal')\">
+                    <i class=\"fas fa-plus\"></i>Add Coin
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class=\"main\">
+        <!-- Dashboard Tab -->
+        <div id=\"dashboard\" class=\"tab-content active\">
+            <div class=\"container\">
+                <div class=\"dashboard-header\">
+                    <h2>Portfolio Overview</h2>
+                    <div class=\"portfolio-summary\">
+                        <div class=\"summary-card\">
+                            <div class=\"card-icon green\">
+                                <i class=\"fas fa-dollar-sign\"></i>
+                            </div>
+                            <div class=\"card-content\">
+                                <h3 id=\"total-value\">$0.00</h3>
+                                <p>Total Portfolio Value</p>
+                            </div>
+                        </div>
+                        <div class=\"summary-card\">
+                            <div class=\"card-icon blue\">
+                                <i class=\"fas fa-chart-line\"></i>
+                            </div>
+                            <div class=\"card-content\">
+                                <h3 id=\"total-pnl\">$0.00</h3>
+                                <p>Total P&L</p>
+                            </div>
+                        </div>
+                        <div class=\"summary-card\">
+                            <div class=\"card-icon purple\">
+                                <i class=\"fas fa-percentage\"></i>
+                            </div>
+                            <div class=\"card-content\">
+                                <h3 id=\"monthly-pnl\">0%</h3>
+                                <p>This Month</p>
+                            </div>
+                        </div>
+                        <div class=\"summary-card\">
+                            <div class=\"card-icon orange\">
+                                <i class=\"fas fa-coins\"></i>
+                            </div>
+                            <div class=\"card-content\">
+                                <h3 id=\"total-coins\">0</h3>
+                                <p>Total Coins</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Tab -->
+        <div id=\"portfolio\" class=\"tab-content\">
+            <div class=\"container\">
+                <div class=\"section-header\">
+                    <h2>My Portfolio</h2>
+                    <button class=\"btn btn-primary\" onclick=\"openModal('add-coin-modal')\">
+                        <i class=\"fas fa-plus\"></i>Add Coin
+                    </button>
+                </div>
+                <div id=\"portfolio-list\">
+                    <div style=\"text-align: center; padding: 40px;\">
+                        <h3>📊 Portfolio is empty</h3>
+                        <p>Click \"Add Coin\" to start tracking your investments!</p>
+                        <button class=\"btn btn-primary\" onclick=\"openModal('add-coin-modal')\">Add Your First Coin</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trades Tab -->
+        <div id=\"trades\" class=\"tab-content\">
+            <div class=\"container\">
+                <div class=\"section-header\">
+                    <h2>Trading History</h2>
+                    <button class=\"btn btn-primary\" onclick=\"openModal('trade-modal')\">
+                        <i class=\"fas fa-plus\"></i>Add Trade
+                    </button>
+                </div>
+                <div id=\"trades-list\">
+                    <div style=\"text-align: center; padding: 40px;\">
+                        <h3>📈 No trades yet</h3>
+                        <p>Record your first trade to start tracking performance!</p>
+                        <button class=\"btn btn-primary\" onclick=\"openModal('trade-modal')\">Add Your First Trade</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Watchlist Tab -->
+        <div id=\"watchlist\" class=\"tab-content\">
+            <div class=\"container\">
+                <div class=\"section-header\">
+                    <h2>Watchlist</h2>
+                    <button class=\"btn btn-primary\" onclick=\"openModal('watchlist-modal')\">
+                        <i class=\"fas fa-plus\"></i>Add to Watchlist
+                    </button>
+                </div>
+                <div id=\"watchlist-list\">
+                    <div style=\"text-align: center; padding: 40px;\">
+                        <h3>👀 Watchlist is empty</h3>
+                        <p>Add coins to monitor their price movements!</p>
+                        <button class=\"btn btn-primary\" onclick=\"openModal('watchlist-modal')\">Add to Watchlist</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts Tab -->
+        <div id=\"alerts\" class=\"tab-content\">
+            <div class=\"container\">
+                <div class=\"section-header\">
+                    <h2>Price Alerts</h2>
+                    <button class=\"btn btn-primary\" onclick=\"openModal('alert-modal')\">
+                        <i class=\"fas fa-plus\"></i>Add Alert
+                    </button>
+                </div>
+                <div id=\"alerts-list\">
+                    <div style=\"text-align: center; padding: 40px;\">
+                        <h3>🔔 No active alerts</h3>
+                        <p>Create price alerts to get notified!</p>
+                        <button class=\"btn btn-primary\" onclick=\"openModal('alert-modal')\">Create Alert</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Coin Modal -->
+    <div id=\"add-coin-modal\" class=\"modal\">
+        <div class=\"modal-content\">
+            <div class=\"modal-header\">
+                <h3>Add Coin to Portfolio</h3>
+                <span class=\"close\" onclick=\"closeModal('add-coin-modal')\">&times;</span>
+            </div>
+            <div class=\"modal-body\">
+                <form onsubmit=\"addCoin(); return false;\">
+                    <div class=\"form-group\">
+                        <label>Coin Symbol</label>
+                        <input type=\"text\" id=\"coin-symbol\" placeholder=\"e.g., BTC, ETH\" required>
+                    </div>
+                    <div class=\"form-group\">
+                        <label>Holdings</label>
+                        <input type=\"number\" id=\"coin-holdings\" step=\"0.00000001\" placeholder=\"Amount you hold\" required>
+                    </div>
+                    <div class=\"form-group\">
+                        <label>Average Buy Price</label>
+                        <input type=\"number\" id=\"coin-buy-price\" step=\"0.01\" placeholder=\"Your average buy price\" required>
+                    </div>
+                    <div class=\"modal-footer\">
+                        <button type=\"button\" class=\"btn btn-secondary\" onclick=\"closeModal('add-coin-modal')\">Cancel</button>
+                        <button type=\"submit\" class=\"btn btn-primary\">Add Coin</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trade Modal -->
+    <div id=\"trade-modal\" class=\"modal\">
+        <div class=\"modal-content\">
+            <div class=\"modal-header\">
+                <h3>Add Trade</h3>
+                <span class=\"close\" onclick=\"closeModal('trade-modal')\">&times;</span>
+            </div>
+            <div class=\"modal-body\">
+                <form onsubmit=\"addTrade(); return false;\">
+                    <div class=\"form-group\">
+                        <label>Coin</label>
+                        <input type=\"text\" id=\"trade-coin\" placeholder=\"e.g., BTC\" required>
+                    </div>
+                    <div class=\"form-group\">
+                        <label>Trade Type</label>
+                        <select id=\"trade-type\" required>
+                            <option value=\"\">Select Type</option>
+                            <option value=\"buy\">Buy</option>
+                            <option value=\"sell\">Sell</option>
+                        </select>
+                    </div>
+                    <div class=\"form-group\">
+                        <label>Amount</label>
+                        <input type=\"number\" id=\"trade-amount\" step=\"0.00000001\" required>
+                    </div>
+                    <div class=\"form-group\">
+                        <label>Price</label>
+                        <input type=\"number\" id=\"trade-price\" step=\"0.01\" required>
+                    </div>
+                    <div class=\"modal-footer\">
+                        <button type=\"button\" class=\"btn btn-secondary\" onclick=\"closeModal('trade-modal')\">Cancel</button>
+                        <button type=\"submit\" class=\"btn btn-primary\">Add Trade</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Minimal JS to make navigation work and modals
+        const navLinks = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                const target = link.getAttribute('onclick').match(/'([^']+)'/)[1];
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                document.getElementById(target).classList.add('active');
+            });
+        });
+
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+"""
+
+import zipfile
+
+zip_filename = 'crypto_tracker_simple_website.zip'
+
+with zipfile.ZipFile(zip_filename, 'w') as zf:
+    zf.writestr('index.html', index_html_content)
+
+zip_filename
