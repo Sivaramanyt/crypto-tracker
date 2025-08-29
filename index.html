@@ -1,4 +1,4 @@
-index_html_content = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang=\"en\">
 <head>
     <meta charset=\"UTF-8\">
@@ -261,13 +261,4 @@ index_html_content = """<!DOCTYPE html>
     </script>
 </body>
 </html>
-"""
 
-import zipfile
-
-zip_filename = 'crypto_tracker_simple_website.zip'
-
-with zipfile.ZipFile(zip_filename, 'w') as zf:
-    zf.writestr('index.html', index_html_content)
-
-zip_filename
